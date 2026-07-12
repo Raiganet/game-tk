@@ -2,117 +2,398 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#667eea">
-    <title>EduKids Adventure - Game Edukasi Premium</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>EduKids Adventure - Premium Learning Game</title>
     <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='25' fill='%236366f1'/%3E%3Ctext x='50' y='70' font-size='60' text-anchor='middle' fill='white'%3E🎓%3C/text%3E%3C/svg%3E">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- PARTICLE CONTAINER -->
-    <div id="particleContainer" class="particle-container"></div>
+    <!-- ANIMATED BACKGROUNDS -->
+    <div id="animatedBg" class="animated-bg"></div>
+    <div id="particlesContainer" class="particles-container"></div>
     <div id="confettiContainer" class="confetti-container"></div>
-
-    <!-- CHARACTER GUIDE -->
-    <div id="characterGuide" class="character-guide">
-        <div class="character-bubble" id="guideBubble">
-            <span id="guideText">Halo! Aku EduBot! 👋</span>
-        </div>
-        <div class="character-avatar" id="guideAvatar">🤖</div>
-    </div>
+    <div id="fireworksContainer" class="fireworks-container"></div>
 
     <!-- SPLASH SCREEN -->
     <div id="splash" class="screen active">
         <div class="splash-content">
-            <div class="logo">🎓</div>
-            <h1>EduKids Adventure</h1>
-            <p>Belajar Sambil Bermain!</p>
-            <div class="loader"></div>
+            <div class="splash-logo">🎓</div>
+            <h1 class="splash-title">EduKids Adventure</h1>
+            <p class="splash-subtitle">Belajar Sambil Bermain!</p>
+            <div class="splash-loader">
+                <div class="loader-bar"></div>
+            </div>
+            <div class="splash-progress">Memuat petualangan...</div>
         </div>
     </div>
 
     <!-- LOGIN SCREEN -->
     <div id="login" class="screen">
-        <div class="container">
-            <div class="card">
-                <h1>👋 Selamat Datang!</h1>
-                <p>Masukkan nama untuk mulai bermain</p>
-                
-                <input type="text" id="nameInput" placeholder="Nama Kamu" maxlength="20">
-                <input type="number" id="ageInput" placeholder="Usia (4-12)" min="4" max="12">
-                
-                <h3>Pilih Avatar:</h3>
-                <div class="avatar-grid" id="avatarGrid"></div>
-                
-                <button class="btn-primary" onclick="login()">🚀 Mulai Petualangan!</button>
-                <button class="btn-secondary" onclick="toggleDarkMode()"> Mode Gelap</button>
+        <div class="glass-card login-card">
+            <div class="mascot-large">🤖</div>
+            <h1>Halo Petualang! 👋</h1>
+            <p>Siap untuk memulai petualangan?</p>
+            
+            <div class="input-group">
+                <label>Nama Kamu</label>
+                <input type="text" id="nameInput" placeholder="Contoh: Rais" maxlength="20">
             </div>
+            
+            <div class="input-group">
+                <label>Usia (4-12 tahun)</label>
+                <input type="number" id="ageInput" placeholder="5" min="4" max="12">
+            </div>
+            
+            <div class="input-group">
+                <label>Pilih Avatar</label>
+                <div class="avatar-selector" id="avatarSelector"></div>
+            </div>
+
+            <div class="input-group">
+                <label>Pilih Pet</label>
+                <div class="pet-selector" id="petSelector"></div>
+            </div>
+            
+            <button class="btn-primary btn-large" onclick="login()">
+                <span>🚀</span> Mulai Petualangan
+            </button>
+            
+            <button class="btn-ghost" onclick="toggleTheme()">
+                <span id="themeIcon">🌙</span> <span id="themeText">Mode Gelap</span>
+            </button>
         </div>
     </div>
 
-    <!-- MAIN MENU -->
+    <!-- MAIN DASHBOARD -->
     <div id="main" class="screen">
-        <div class="top-bar">
-            <div class="player-info">
-                <span class="avatar" id="mainAvatar"></span>
-                <div>
-                    <div class="player-name" id="playerName">Nama</div>
-                    <div class="player-level">Level <span id="playerLevel">1</span></div>
+        <!-- TOP STATUS BAR -->
+        <div class="status-bar">
+            <div class="player-chip" onclick="showProfile()">
+                <div class="player-avatar-small" id="topAvatar">🦊</div>
+                <div class="player-info-small">
+                    <div class="player-name-small" id="topName">Nama</div>
+                    <div class="player-level-small">Lv. <span id="topLevel">1</span></div>
                 </div>
             </div>
-            <div class="stats">
-                <div class="stat">⭐ <span id="xpDisplay">0</span> XP</div>
-                <div class="stat">💰 <span id="coinDisplay">0</span></div>
-                <button class="icon-btn" onclick="toggleSettings()">⚙️</button>
+            
+            <div class="stats-row">
+                <div class="stat-chip energy">
+                    <span class="stat-icon">❤️</span>
+                    <span id="energyDisplay">5</span>
+                </div>
+                <div class="stat-chip coin">
+                    <span class="stat-icon">💰</span>
+                    <span id="coinDisplay">0</span>
+                </div>
+                <div class="stat-chip xp">
+                    <span class="stat-icon">⭐</span>
+                    <span id="xpDisplay">0</span>
+                </div>
             </div>
         </div>
 
-        <div class="xp-bar-container">
-            <div class="xp-bar" id="xpBar"></div>
-            <span class="xp-text" id="xpText">0 / 100 XP</span>
+        <!-- XP PROGRESS BAR -->
+        <div class="xp-progress-container">
+            <div class="xp-progress-bar" id="xpBar"></div>
+            <span class="xp-progress-text" id="xpText">0 / 100 XP</span>
         </div>
 
-        <div class="main-content" id="mainContent">
+        <!-- MAIN SCROLLABLE CONTENT -->
+        <div class="main-scroll" id="mainScroll">
+            
+            <!-- WELCOME SECTION -->
+            <div class="welcome-section">
+                <div class="mascot-small" id="mascotAvatar">🤖</div>
+                <div class="welcome-text">
+                    <h2 id="welcomeMessage">Halo Rais!</h2>
+                    <p id="welcomeSubtext">Siap belajar apa hari ini?</p>
+                </div>
+            </div>
+
+            <!-- DAILY STREAK & CALENDAR -->
+            <div class="streak-calendar-section">
+                <div class="streak-card">
+                    <div class="streak-fire">🔥</div>
+                    <div class="streak-info">
+                        <div class="streak-count" id="streakCount">1</div>
+                        <div class="streak-label">Hari Streak</div>
+                    </div>
+                </div>
+                <button class="btn-chip" onclick="claimDailyReward()">
+                    <span>🎁</span> Klaim Harian
+                </button>
+            </div>
+
             <!-- DAILY MISSIONS -->
-            <div class="daily-missions">
+            <div class="section-header">
                 <h2>📋 Misi Hari Ini</h2>
-                <div class="missions-grid" id="missionsGrid"></div>
+                <div class="section-badge" id="missionsCompleted">0/3</div>
+            </div>
+            <div class="missions-container" id="missionsContainer"></div>
+
+            <!-- CHESTS SECTION -->
+            <div class="section-header">
+                <h2>🎁 Peti Harta Karun</h2>
+            </div>
+            <div class="chests-row" id="chestsRow">
+                <div class="chest-card" onclick="openChest('daily')">
+                    <div class="chest-icon daily">🎁</div>
+                    <div class="chest-name">Daily Chest</div>
+                    <div class="chest-timer" id="dailyChestTimer">Siap!</div>
+                </div>
+                <div class="chest-card locked" onclick="openChest('epic')">
+                    <div class="chest-icon epic">🎊</div>
+                    <div class="chest-name">Epic Chest</div>
+                    <div class="chest-timer">Lv. 3</div>
+                </div>
+                <div class="chest-card locked" onclick="openChest('legend')">
+                    <div class="chest-icon legend">👑</div>
+                    <div class="chest-name">Legend Chest</div>
+                    <div class="chest-timer">Lv. 5</div>
+                </div>
             </div>
 
-            <!-- ADVENTURE PATH -->
-            <h2>🗺️ Peta Petualangan</h2>
-            <div class="adventure-path" id="adventurePath"></div>
-
-            <!-- ACTION BUTTONS -->
-            <div class="action-buttons">
-                <button class="btn-action" onclick="showAchievements()">🏆 Pencapaian</button>
-                <button class="btn-action" onclick="showShop()">🛒 Toko</button>
-                <button class="btn-action" onclick="showParentDashboard()">‍👩‍👧 Orang Tua</button>
-                <button class="btn-action" onclick="claimDailyReward()"> Hadiah</button>
+            <!-- ADVENTURE MAP -->
+            <div class="section-header">
+                <h2>🗺️ Peta Petualangan</h2>
             </div>
+            <div class="adventure-map" id="adventureMap">
+                <svg class="map-path" id="mapPath" viewBox="0 0 400 800" preserveAspectRatio="xMidYMid meet"></svg>
+                <div class="map-nodes" id="mapNodes"></div>
+                <div class="character-sprite" id="characterSprite">🧒</div>
+            </div>
+
+            <!-- QUICK ACTIONS -->
+            <div class="section-header">
+                <h2>⚡ Aksi Cepat</h2>
+            </div>
+            <div class="quick-actions">
+                <button class="action-btn" onclick="showScreen('shop')">
+                    <span class="action-icon">🛒</span>
+                    <span class="action-label">Toko</span>
+                </button>
+                <button class="action-btn" onclick="showScreen('pet')">
+                    <span class="action-icon">🐾</span>
+                    <span class="action-label">Pet</span>
+                </button>
+                <button class="action-btn" onclick="showScreen('collection')">
+                    <span class="action-icon">📚</span>
+                    <span class="action-label">Koleksi</span>
+                </button>
+                <button class="action-btn" onclick="showScreen('achievements')">
+                    <span class="action-icon">🏆</span>
+                    <span class="action-label">Prestasi</span>
+                </button>
+            </div>
+
+            <!-- STATISTICS -->
+            <div class="section-header">
+                <h2>📊 Statistik Mingguan</h2>
+            </div>
+            <div class="stats-chart" id="statsChart"></div>
+
+            <!-- CONTINUE BUTTON -->
+            <button class="continue-btn" onclick="continuePlaying()">
+                <span class="continue-icon">▶️</span>
+                <span class="continue-text">Lanjutkan Bermain</span>
+            </button>
+
         </div>
+
+        <!-- BOTTOM NAVIGATION -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-screen="main">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Beranda</span>
+            </button>
+            <button class="nav-item" data-screen="shop">
+                <span class="nav-icon">🛒</span>
+                <span class="nav-label">Toko</span>
+            </button>
+            <button class="nav-item" data-screen="pet">
+                <span class="nav-icon">🐾</span>
+                <span class="nav-label">Pet</span>
+            </button>
+            <button class="nav-item" data-screen="achievements">
+                <span class="nav-icon">🏆</span>
+                <span class="nav-label">Prestasi</span>
+            </button>
+            <button class="nav-item" data-screen="profile">
+                <span class="nav-icon">👤</span>
+                <span class="nav-label">Profil</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- SHOP SCREEN -->
+    <div id="shop" class="screen">
+        <div class="screen-header">
+            <button class="btn-back" onclick="showScreen('main')">⬅️</button>
+            <h1>🛒 Toko</h1>
+            <div class="coin-display">💰 <span id="shopCoins">0</span></div>
+        </div>
+        <div class="shop-tabs">
+            <button class="tab-btn active" data-tab="avatar">Avatar</button>
+            <button class="tab-btn" data-tab="pet">Pet</button>
+            <button class="tab-btn" data-tab="theme">Tema</button>
+            <button class="tab-btn" data-tab="boost">Boost</button>
+        </div>
+        <div class="shop-content" id="shopContent"></div>
+    </div>
+
+    <!-- PET SCREEN -->
+    <div id="pet" class="screen">
+        <div class="screen-header">
+            <button class="btn-back" onclick="showScreen('main')">⬅️</button>
+            <h1>🐾 Pet Saya</h1>
+            <div></div>
+        </div>
+        <div class="pet-screen-content" id="petContent"></div>
+    </div>
+
+    <!-- COLLECTION SCREEN -->
+    <div id="collection" class="screen">
+        <div class="screen-header">
+            <button class="btn-back" onclick="showScreen('main')">⬅️</button>
+            <h1>📚 Koleksi</h1>
+            <div></div>
+        </div>
+        <div class="collection-content" id="collectionContent"></div>
+    </div>
+
+    <!-- ACHIEVEMENTS SCREEN -->
+    <div id="achievements" class="screen">
+        <div class="screen-header">
+            <button class="btn-back" onclick="showScreen('main')">⬅️</button>
+            <h1>🏆 Prestasi</h1>
+            <div class="badge" id="achieveCount">0/100</div>
+        </div>
+        <div class="achievements-content" id="achievementsContent"></div>
+    </div>
+
+    <!-- PROFILE SCREEN -->
+    <div id="profile" class="screen">
+        <div class="screen-header">
+            <button class="btn-back" onclick="showScreen('main')">⬅️</button>
+            <h1>👤 Profil</h1>
+            <button class="btn-icon" onclick="showParentDashboard()">👨‍👩‍👧</button>
+        </div>
+        <div class="profile-content" id="profileContent"></div>
     </div>
 
     <!-- GAME SCREEN -->
     <div id="game" class="screen">
-        <div class="game-header">
-            <button class="back-btn" onclick="exitGame()">⬅️ Kembali</button>
-            <h2 id="gameTitle">Game</h2>
-            <div class="game-score">⭐ <span id="gameScore">0</span></div>
+        <div class="game-topbar">
+            <button class="btn-back" onclick="exitGame()">⬅️</button>
+            <div class="game-title" id="gameTitle">Game</div>
+            <div class="game-stats">
+                <span class="game-score">⭐ <span id="gameScore">0</span></span>
+                <span class="game-round">R<span id="gameRound">1</span>/5</span>
+            </div>
+        </div>
+        <div class="game-progress">
+            <div class="game-progress-bar" id="gameProgressBar"></div>
         </div>
         <div class="game-content" id="gameContent"></div>
     </div>
 
+    <!-- BOSS BATTLE SCREEN -->
+    <div id="boss" class="screen">
+        <div class="boss-topbar">
+            <div class="boss-info">
+                <div class="boss-name" id="bossName">Boss</div>
+                <div class="boss-hp-bar">
+                    <div class="boss-hp-fill" id="bossHpFill"></div>
+                </div>
+            </div>
+            <div class="player-mini">
+                <span id="bossPlayerName">Player</span>
+                <div class="mini-hp-bar">
+                    <div class="mini-hp-fill" id="playerHpFill"></div>
+                </div>
+            </div>
+        </div>
+        <div class="boss-arena">
+            <div class="boss-sprite" id="bossSprite">👹</div>
+            <div class="battle-log" id="battleLog">Pertarungan dimulai!</div>
+        </div>
+        <div class="battle-question" id="battleQuestion"></div>
+        <div class="battle-options" id="battleOptions"></div>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="result" class="screen">
+        <div class="result-content">
+            <div class="result-stars" id="resultStars"></div>
+            <h1 id="resultTitle">Hebat!</h1>
+            <p id="resultSubtitle">Kamu selesai bermain</p>
+            
+            <div class="result-rewards">
+                <div class="reward-item">
+                    <div class="reward-icon">⭐</div>
+                    <div class="reward-value" id="resultXP">+50</div>
+                    <div class="reward-label">XP</div>
+                </div>
+                <div class="reward-item">
+                    <div class="reward-icon">💰</div>
+                    <div class="reward-value" id="resultCoins">+20</div>
+                    <div class="reward-label">Koin</div>
+                </div>
+                <div class="reward-item" id="resultBonus" style="display:none;">
+                    <div class="reward-icon">🎁</div>
+                    <div class="reward-value">Bonus!</div>
+                    <div class="reward-label">Hadiah</div>
+                </div>
+            </div>
+
+            <div class="result-actions">
+                <button class="btn-primary" onclick="continueAfterResult()">
+                    ▶️ Lanjut
+                </button>
+                <button class="btn-secondary" onclick="showScreen('main')">
+                    🏠 Menu
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- MODAL -->
     <div id="modal" class="modal">
+        <div class="modal-backdrop" onclick="closeModal()"></div>
         <div class="modal-content">
-            <button class="close-btn" onclick="closeModal()">✖️</button>
+            <button class="modal-close" onclick="closeModal()">✖️</button>
             <div id="modalBody"></div>
         </div>
     </div>
 
     <!-- NOTIFICATION -->
     <div id="notification" class="notification"></div>
+
+    <!-- LEVEL UP OVERLAY -->
+    <div id="levelUpOverlay" class="level-up-overlay">
+        <div class="level-up-content">
+            <div class="level-up-icon">⭐</div>
+            <h1>LEVEL UP!</h1>
+            <h2 id="levelUpNumber">Level 2</h2>
+            <p id="levelUpMessage">Hebat sekali!</p>
+            <button class="btn-primary" onclick="closeLevelUp()">Lanjutkan! 🎉</button>
+        </div>
+    </div>
+
+    <!-- MASCOT GUIDE -->
+    <div class="mascot-guide" id="mascotGuide">
+        <div class="mascot-bubble" id="mascotBubble">
+            <p id="mascotText">Halo! Aku EduBot!</p>
+        </div>
+        <div class="mascot-sprite" id="mascotSprite" onclick="mascotSpeak()">🤖</div>
+    </div>
+
+    <!-- FLOATING MUSIC BUTTON -->
+    <button class="music-toggle" id="musicToggle" onclick="toggleMusic()">🔊</button>
 
     <script src="app.js"></script>
 </body>
