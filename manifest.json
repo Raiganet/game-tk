@@ -1,22 +1,41 @@
 {
-    "name": "EduKids Adventure",
+    "name": "EduKids Adventure - Premium Learning Game",
     "short_name": "EduKids",
-    "description": "Game edukasi premium untuk anak TK dan SD",
+    "description": "Game edukasi premium untuk anak TK & SD dengan 20+ mini game, boss battle, pet system, dan banyak lagi!",
     "start_url": "./index.html",
     "display": "standalone",
-    "background_color": "#667eea",
-    "theme_color": "#667eea",
     "orientation": "portrait",
+    "background_color": "#6366f1",
+    "theme_color": "#6366f1",
+    "categories": ["education", "games", "kids"],
+    "lang": "id",
     "icons": [
         {
-            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%23667eea'/%3E%3Ctext x='96' y='140' font-size='120' text-anchor='middle' fill='white'%3E🎓%3C/text%3E%3C/svg%3E",
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%236366f1'/%3E%3Ctext x='96' y='140' font-size='120' text-anchor='middle' fill='white'%3E🎓%3C/text%3E%3C/svg%3E",
             "sizes": "192x192",
-            "type": "image/svg+xml"
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
         },
         {
-            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%23667eea'/%3E%3Ctext x='256' y='370' font-size='320' text-anchor='middle' fill='white'%3E🎓%3C/text%3E%3C/svg%3E",
+            "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='100' fill='%236366f1'/%3E%3Ctext x='256' y='370' font-size='320' text-anchor='middle' fill='white'%3E🎓%3C/text%3E%3C/svg%3E",
             "sizes": "512x512",
-            "type": "image/svg+xml"
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ],
+    "screenshots": [],
+    "shortcuts": [
+        {
+            "name": "Mainkan Sekarang",
+            "short_name": "Main",
+            "description": "Lanjutkan petualangan",
+            "url": "./index.html?action=play"
+        },
+        {
+            "name": "Toko",
+            "short_name": "Toko",
+            "description": "Beli item menarik",
+            "url": "./index.html#shop"
         }
     ]
 }
