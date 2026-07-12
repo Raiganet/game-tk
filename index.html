@@ -1,192 +1,345 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Digitalent Project</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="assets/css/fontawesome.min.css">
-    <link rel="stylesheet" href="assets/css/brands.min.css">
-    <link rel="stylesheet" href="assets/css/solid.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Edukasi TK - Membaca & Berhitung</title>
+    <style>
+        :root {
+            --primary: #ff9a9e;
+            --secondary: #fecfef;
+            --bg: #f6f9fc;
+            --success: #4ade80;
+            --error: #f87171;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .screen { display: none; }
+        .active { display: block; animation: fadeIn 0.5s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { color: #333; margin-bottom: 10px; }
+        h2 { color: #666; font-weight: normal; }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.5rem;
+            font-family: inherit;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            margin: 10px;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-block;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
+        .btn:active { transform: translateY(1px); }
+
+        .btn-menu-1 { background: linear-gradient(to right, #a1c4fd, #c2e9fb); }
+        .btn-menu-2 { background: linear-gradient(to right, #f6d365, #fda085); }
+        .btn-back { background: #cbd5e1; color: #475569; font-size: 1.2rem; width: auto; padding: 10px 20px; margin-top: 20px;}
+
+        .emoji-display {
+            font-size: 8rem;
+            margin: 20px 0;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .options-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .option-btn {
+            padding: 15px 25px;
+            font-size: 2rem;
+            font-family: inherit;
+            font-weight: bold;
+            border-radius: 15px;
+            background: white;
+            border: 3px solid #e2e8f0;
+            cursor: pointer;
+            min-width: 100px;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover { border-color: #94a3b8; background: #f8fafc; }
+        .option-btn.correct { background: #dcfce7; border-color: var(--success); color: #166534; }
+        .option-btn.wrong { background: #fee2e2; border-color: var(--error); color: #991b1b; animation: shake 0.5s; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        #feedback {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 20px;
+            min-height: 50px;
+        }
+        
+        .score-board {
+            font-size: 1.2rem;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
-
 <body>
-    <div class="nav">
-        <div class="nav-logo">
-            <img src="assets/img/c9.png" width="50" alt="">
-        </div>
-        <div class="nav-list">
-            <ul>
-                <a href="#home">
-                    <li>Home</li>
-                </a>
-                <a href="#aboutUs">
-                    <li> about</li>
-                </a>
-                <a href="#Contact">
-                    <li>Contact</li>
-                </a>
-            </ul>
-        </div>
-    </div>
-    <div class="header-ctn" id="home">
-        <div class="background-img"></div>
-        <div class="judul-ctn">
-            <h1> DTS 20 - C9</h1>
-             <!-- <div class="anim-c9"><img src="assets/img/c9.png" width="100" alt=""></div> -->
-            <h2> Team Work. </h2>
-        </div>
-        <div class="motto-header">
-            "berusaha untuk menjadi lebih baik."
-        </div>
-    </div>
-    <section>
-        <div class="members-wrapper">
-            <div class="main-batas b-db"></div>
-            <div class="main-batas b-b"></div>
-            <div class="main-batas b-lb"></div>
-            <div class="main-box">s</div>
-            <div class="container">
-                <div class="heading">
-                    <h2>Harapan Ikut DTS20?</h2>
-                </div>
-                <div class="members" id="aboutUs">
-                    <div class="member">
-                        <div class="member-photo">
-                            <img src="assets/img/dinar.jpeg" width="150px" height="200px"></div>
-                        <div class="member-name">Dinar Amani Lakista</div>
-                        <div class="member-des">Harapan saya semoga setelah ikut digital talent scholarship bisa menjadi programmer yang terbaik</div>
-                    </div>
-                    <div class="member">
-                        <div class="member-photo">
-                            <img src="assets/img/dimar.jpg" width="150px" height="200px"> </div>
-                        <div class="member-name">Dimar Hanung Prakoso</div>
-                        <div class="member-des">Harapan semoga ilmu berguna untuk dunia kerja.</div>
-                    </div>
-                    <div class="member">
-                        <div class="member-photo">
-                            <img src="assets/img/diky1.jpeg" width="150px" height="200px"></div>
-                        <div class="member-name">Diky Hermansyah</div>
-                        <div class="member-des">Harapan saya semoga bisa menjadi programer handal yg bisa menjadi Web Developer ternama di Indonesia</div>
-                    </div>
-                    <div class="member m-left">
-                        <div class="member-photo">
-                            <img src="assets/img/elga.jpeg" width="150px" height="200px">
-                        </div>
-                        <div class="member-name">Elga Nurlaela</div>
-                        <div class="member-des">Harapan saya semoga ilmunya bermanfaat</div>
-                    </div>
-                    <div class="member m-right">
-                        <div class="member-photo">
-                            <img src="assets/img/dhinarN.jpg" width="150px" height="200px"></div>
-                        <div class="member-name">Dhinar Novani Adelia</div>
-                        <div class="member-des">Harapan saya semoga <em>skill</em> yang diperoleh menjadi bermanfaat bagi diri sendiri dan orang lain</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section>
-        <div class="extra-1">
-            <div class="extra-judul" id="Contact">Lebih Dekat dengan Kami?</div>
-            <div class="members">
-                <div class="member p-0">
-                    <div class="member-detail-name">Dinar Amani Lakista</div>
-                    <i class="fas fa-map-marker-alt member-logo"></i>
-                    <div class="member-detail-text">Muararajeun, Bandung</div>
-                    <hr />
-                    <i class="fas fa-birthday-cake member-logo"></i>
-                    <div class="member-detail-text">01 maret 1997</div>
-                    <hr />
-                    <div class="member-detail-motto f-sm">berakit rakit ke hulu berenang-renang ketepian bersusah-susah dahulu, bersenang-senang kemudian</div>
-                    <div class="member-social"><span></span>
-                        <a href="https://www.instagram.com/dinarlakista/"><i class="fab fa-instagram"></i></a>
-                        
-                    </div>
-                </div>
-                <div class="member p-0">
-                    <div class="member-detail-name">Dimar Hanung Prakoso</div>
-                    <i class="fas fa-map-marker-alt member-logo"></i>
-                    <div class="member-detail-text">Banyumas, Purwokerto</div>
-                    <hr />
-                    <i class="fas fa-birthday-cake member-logo"></i>
-                    <div class="member-detail-text">14 Desember 2001</div>
-                    <hr />
-                    <div class="member-detail-motto">Proses Untuk Hasil</div>
-                    <div class="member-social"><span></span>
-                        <a href="https://www.instagram.com/dmr_hanung/"><i class="fab fa-instagram"></i></a>
-                        <a class="bg-twitter" href="https://twitter.com/Dimar56295151"><i class="fab fa-twitter"></i></a>
-                        <a class="bg-twitter" href="https://www.facebook.com/hanung.tikus"><i class="fab fa-facebook"></i></a>
-                        <a class="bg-github" href="https://github.com/dimar-hanung"><i class="fab fa-github"></i></a>
-                    </div>
-                </div>
-                <div class="member p-0">
-                    <div class="member-detail-name">Diky Hermansyah</div>
-                    <i class="fas fa-map-marker-alt member-logo"></i>
-                    <div class="member-detail-text">Baleendah, Bandung</div>
-                    <hr />
-                    <i class="fas fa-birthday-cake member-logo"></i>
-                    <div class="member-detail-text">05 Maret 1991</div>
-                    <hr />
-                    <div class="member-detail-motto f-sm">Bersungguh-sungguhlah dalam setiap hal,maka keberhasilan kan didapatkannya</div>
-                    <div class="member-social"><span></span>
-                        <a href="https://www.instagram.com/raiganet/"><i class="fab fa-instagram"></i></a>
-                        <a class="bg-twitter" href="https://www.facebook.com/Raiganet"><i class="fab fa-facebook"></i></a>
-                    </div>
-                </div>
-                <div class="member p-0">
-                    <div class="member-detail-name">Elga Nurlaela</div>
-                    <i class="fas fa-map-marker-alt member-logo"></i>
-                    <div class="member-detail-text">Cilegon, Banten</div>
-                    <hr />
-                    <i class="fas fa-birthday-cake member-logo"></i>
-                    <div class="member-detail-text">03 Juni 1997</div>
-                    <hr />
-                    <div class="member-detail-motto f-sm">do my best,so that i can't blame myself for anything</div>
-                    <div class="member-social"><span></span>
-                        <a href="https://www.instagram.com/gaelgaelga"><i class="fab fa-instagram"></i></a>
-                        <a class="bg-twitter" href="https://twitter.com/gaelgaelga"><i class="fab fa-twitter"></i></a>
-                    </div>
-                </div>
-                <div class="member p-0">
-                    <div class="member-detail-name">Dhinar Novani Adelia</div>
-                    <i class="fas fa-map-marker-alt member-logo"></i>
-                    <div class="member-detail-text">Malang, Jawa Timur</div>
-                    <hr />
-                    <i class="fas fa-birthday-cake member-logo"></i>
-                    <div class="member-detail-text">19 November 1995</div>
-                    <hr />
-                    <div class="member-detail-motto f-sm">sebaik-baiknya ilmu adalah yg bermanfaat bagi sesama</div>
-                    <div class="member-social"><span></span>
-                        <a href="https://www.instagram.com/dhinar.adelia/"><i class="fab fa-instagram"></i></a>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section>
-    	<div class="extra-2">
-    		<div>Selamat Menunaikan Ibadah Puasa</div>
-    		<div class="dirumah">#dirumahAja</div>
-    		<div><button class="button-donasi">Donasi</button></div>
-    		
-    	</div>
-    </section>
-    <footer>
-        <div class="footer-container">
-            <img src="assets/img/logo.png">
-            <p>
-                <a href="#home">Home | </a>
-                <a href="#aboutUs">Team | </a>
-                <a href="#Contact">Contact</a>
-            </p>
-            <p class="copy-right">
-                Copyright © 2020 | Designed By: Team C09 DTS20 | All rights reserved.
-            </p>
-        </div>
-    </footer>
-</body>
 
+    <!-- MENU UTAMA -->
+    <div id="menu" class="screen active">
+        <div class="container">
+            <h1 style="font-size: 3rem;">🎈 Halo Anak Pintar! 🎈</h1>
+            <h2>Mau bermain apa hari ini?</h2>
+            <br>
+            <button class="btn btn-menu-1" onclick="showScreen('reading')">📖 Membaca</button>
+            <button class="btn btn-menu-2" onclick="showScreen('counting')">🔢 Berhitung</button>
+        </div>
+    </div>
+
+    <!-- GAME MEMBACA -->
+    <div id="reading" class="screen">
+        <div class="container">
+            <div class="score-board">Skor: <span id="read-score">0</span></div>
+            <h1>📖 Tebak Kata!</h1>
+            <div class="emoji-display" id="read-emoji"></div>
+            <div class="options-container" id="read-options"></div>
+            <div id="read-feedback"></div>
+            <button class="btn btn-back" onclick="backToMenu()">⬅️ Menu Utama</button>
+        </div>
+    </div>
+
+    <!-- GAME BERHITUNG -->
+    <div id="counting" class="screen">
+        <div class="container">
+            <div class="score-board">Skor: <span id="count-score">0</span></div>
+            <h1>🔢 Hitung Benda!</h1>
+            <div class="emoji-display" id="count-emoji" style="font-size: 4rem; letter-spacing: 10px;"></div>
+            <div class="options-container" id="count-options"></div>
+            <div id="count-feedback"></div>
+            <button class="btn btn-back" onclick="backToMenu()">⬅️ Menu Utama</button>
+        </div>
+    </div>
+
+    <script>
+        // === DATA GAME MEMBACA ===
+        const readingData = [
+            { emoji: "🍎", word: "APEL", options: ["APEL", "BOLA", "KUCING"] },
+            { emoji: "⚽", word: "BOLA", options: ["MOBIL", "BOLA", "BUKU"] },
+            { emoji: "🐟", word: "IKAN", options: ["IKAN", "AYAM", "BEBEK"] },
+            { emoji: "📚", word: "BUKU", options: ["PENSIL", "MEJA", "BUKU"] },
+            { emoji: "🚗", word: "MOBIL", options: ["PESAWAT", "MOBIL", "KERETA"] },
+            { emoji: "🍌", word: "PISANG", options: ["JERUK", "APEL", "PISANG"] }
+        ];
+
+        // === VARIABEL SKOR ===
+        let readScore = 0;
+        let countScore = 0;
+        let currentReadingIndex = 0;
+
+        // === FUNGSI SUARA (TEXT-TO-SPEECH) ===
+        function speak(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Hentikan suara sebelumnya
+                const msg = new SpeechSynthesisUtterance(text);
+                msg.lang = 'id-ID'; // Bahasa Indonesia
+                msg.rate = 0.9; // Sedikit lebih lambat agar jelas untuk anak
+                msg.pitch = 1.2; // Nada suara agak tinggi (ceria)
+                window.speechSynthesis.speak(msg);
+            }
+        }
+
+        // === NAVIGASI LAYAR ===
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            
+            if(screenId === 'reading') initReadingGame();
+            if(screenId === 'counting') initCountingGame();
+        }
+
+        function backToMenu() {
+            showScreen('menu');
+        }
+
+        // === LOGIKA GAME MEMBACA ===
+        function initReadingGame() {
+            readScore = 0;
+            document.getElementById('read-score').innerText = readScore;
+            currentReadingIndex = 0;
+            loadReadingQuestion();
+        }
+
+        function loadReadingQuestion() {
+            if(currentReadingIndex >= readingData.length) {
+                currentReadingIndex = 0; // Ulangi dari awal jika habis
+            }
+            
+            const q = readingData[currentReadingIndex];
+            document.getElementById('read-emoji').innerText = q.emoji;
+            document.getElementById('read-feedback').innerText = "";
+            
+            const optionsContainer = document.getElementById('read-options');
+            optionsContainer.innerHTML = "";
+            
+            // Acak opsi jawaban
+            const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+            
+            shuffledOptions.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkReadingAnswer(btn, opt, q.word);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkReadingAnswer(btnElement, selected, correctWord) {
+            const feedback = document.getElementById('read-feedback');
+            const buttons = document.querySelectorAll('#read-options .option-btn');
+            
+            // Disable tombol sementara
+            buttons.forEach(b => b.disabled = true);
+
+            if(selected === correctWord) {
+                btnElement.classList.add('correct');
+                feedback.innerText = "🌟 Benar! Hebat! 🌟";
+                feedback.style.color = "green";
+                readScore += 10;
+                document.getElementById('read-score').innerText = readScore;
+                speak(`Benar! Ini adalah ${correctWord}`);
+                
+                setTimeout(() => {
+                    currentReadingIndex++;
+                    loadReadingQuestion();
+                }, 2500);
+            } else {
+                btnElement.classList.add('wrong');
+                feedback.innerText = "Yah, salah. Coba lagi ya!";
+                feedback.style.color = "red";
+                speak("Yah, salah. Coba lagi ya!");
+                
+                setTimeout(() => {
+                    buttons.forEach(b => b.disabled = false);
+                    btnElement.style.display = 'none'; // Sembunyikan jawaban salah
+                }, 1500);
+            }
+        }
+
+        // === LOGIKA GAME BERHITUNG ===
+        let currentCountAnswer = 0;
+
+        function initCountingGame() {
+            countScore = 0;
+            document.getElementById('count-score').innerText = countScore;
+            loadCountingQuestion();
+        }
+
+        function loadCountingQuestion() {
+            const emojis = ["⭐", "🍎", "🎈", "🐟", "🌸"];
+            const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+            
+            // Acak jumlah dari 1 sampai 5 (sesuai TK)
+            const count = Math.floor(Math.random() * 5) + 1; 
+            currentCountAnswer = count;
+
+            document.getElementById('count-emoji').innerText = randomEmoji.repeat(count);
+            document.getElementById('count-feedback').innerText = "";
+            
+            const optionsContainer = document.getElementById('count-options');
+            optionsContainer.innerHTML = "";
+            
+            // Buat opsi angka
+            let options = [count];
+            while(options.length < 3) {
+                let randomNum = Math.floor(Math.random() * 5) + 1;
+                if(!options.includes(randomNum)) options.push(randomNum);
+            }
+            
+            // Acak urutan opsi
+            options.sort(() => Math.random() - 0.5);
+            
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkCountingAnswer(btn, opt);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkCountingAnswer(btnElement, selected) {
+            const feedback = document.getElementById('count-feedback');
+            const buttons = document.querySelectorAll('#count-options .option-btn');
+            buttons.forEach(b => b.disabled = true);
+
+            if(parseInt(selected) === currentCountAnswer) {
+                btnElement.classList.add('correct');
+                feedback.innerText = "🎉 Pintar Sekali! 🎉";
+                feedback.style.color = "green";
+                countScore += 10;
+                document.getElementById('count-score').innerText = countScore;
+                speak(`Pintar sekali! Jawabannya adalah ${currentCountAnswer}`);
+                
+                setTimeout(loadCountingQuestion, 2500);
+            } else {
+                btnElement.classList.add('wrong');
+                feedback.innerText = "Coba hitung lagi ya!";
+                feedback.style.color = "red";
+                speak("Coba hitung lagi ya!");
+                
+                setTimeout(() => {
+                    buttons.forEach(b => b.disabled = false);
+                }, 1500);
+            }
+        }
+
+        // Panggilan awal
+        window.onload = () => {
+            speak("Halo anak pintar! Mau bermain apa hari ini?");
+        };
+    </script>
+</body>
 </html>
