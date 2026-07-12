@@ -4,11 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#667eea">
-    <title>EduKids Adventure - Game Edukasi Anak</title>
+    <title>EduKids Adventure - Game Edukasi Premium</title>
     <link rel="manifest" href="manifest.json">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- PARTICLE CONTAINER -->
+    <div id="particleContainer" class="particle-container"></div>
+    <div id="confettiContainer" class="confetti-container"></div>
+
+    <!-- CHARACTER GUIDE -->
+    <div id="characterGuide" class="character-guide">
+        <div class="character-bubble" id="guideBubble">
+            <span id="guideText">Halo! Aku EduBot! 👋</span>
+        </div>
+        <div class="character-avatar" id="guideAvatar">🤖</div>
+    </div>
+
     <!-- SPLASH SCREEN -->
     <div id="splash" class="screen active">
         <div class="splash-content">
@@ -33,7 +45,7 @@
                 <div class="avatar-grid" id="avatarGrid"></div>
                 
                 <button class="btn-primary" onclick="login()">🚀 Mulai Petualangan!</button>
-                <button class="btn-secondary" onclick="toggleDarkMode()">🌙 Mode Gelap</button>
+                <button class="btn-secondary" onclick="toggleDarkMode()"> Mode Gelap</button>
             </div>
         </div>
     </div>
@@ -42,7 +54,7 @@
     <div id="main" class="screen">
         <div class="top-bar">
             <div class="player-info">
-                <span class="avatar" id="mainAvatar">👤</span>
+                <span class="avatar" id="mainAvatar"></span>
                 <div>
                     <div class="player-name" id="playerName">Nama</div>
                     <div class="player-level">Level <span id="playerLevel">1</span></div>
@@ -60,15 +72,23 @@
             <span class="xp-text" id="xpText">0 / 100 XP</span>
         </div>
 
-        <div class="main-content">
-            <h2>🗺️ Peta Petualangan</h2>
-            <div class="world-grid" id="worldGrid"></div>
+        <div class="main-content" id="mainContent">
+            <!-- DAILY MISSIONS -->
+            <div class="daily-missions">
+                <h2>📋 Misi Hari Ini</h2>
+                <div class="missions-grid" id="missionsGrid"></div>
+            </div>
 
+            <!-- ADVENTURE PATH -->
+            <h2>🗺️ Peta Petualangan</h2>
+            <div class="adventure-path" id="adventurePath"></div>
+
+            <!-- ACTION BUTTONS -->
             <div class="action-buttons">
                 <button class="btn-action" onclick="showAchievements()">🏆 Pencapaian</button>
                 <button class="btn-action" onclick="showShop()">🛒 Toko</button>
-                <button class="btn-action" onclick="showParentDashboard()">👨‍👩‍👧 Dashboard Orang Tua</button>
-                <button class="btn-action" onclick="claimDailyReward()">🎁 Hadiah Harian</button>
+                <button class="btn-action" onclick="showParentDashboard()">‍👩‍👧 Orang Tua</button>
+                <button class="btn-action" onclick="claimDailyReward()"> Hadiah</button>
             </div>
         </div>
     </div>
