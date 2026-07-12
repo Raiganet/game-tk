@@ -1,13 +1,13 @@
 // ============= DATA =============
-const AVATARS = ['🦊', '🐼', '🦁', '🐸', '🐵', '🐰', '🐻', '🐯', '🦄', '🐶'];
+const AVATARS = ['', '🐼', '🦁', '🐸', '🐵', '', '🐻', '🐯', '🦄', '🐶'];
 
 const WORLDS = [
-    { id: 'huruf', name: 'Kota Huruf', icon: '📚', games: ['tebak-huruf'], unlockLevel: 1, xpReward: 10 },
-    { id: 'angka', name: 'Pulau Angka', icon: '🔢', games: ['hitung-benda'], unlockLevel: 1, xpReward: 10 },
-    { id: 'warna', name: 'Hutan Warna', icon: '🎨', games: ['cocok-warna'], unlockLevel: 2, xpReward: 15 },
-    { id: 'bentuk', name: 'Kerajaan Bentuk', icon: '⚪', games: ['tebak-bentuk'], unlockLevel: 3, xpReward: 20 },
-    { id: 'sains', name: 'Hutan Sains', icon: '🔬', games: [], unlockLevel: 5, xpReward: 30 },
-    { id: 'english', name: 'Planet English', icon: '🌍', games: [], unlockLevel: 7, xpReward: 40 }
+    { id: 'huruf', name: 'Kota Huruf', icon: '📚', games: ['tebak-huruf'], unlockLevel: 1, xpReward: 10, theme: 'theme-sky' },
+    { id: 'angka', name: 'Pulau Angka', icon: '🔢', games: ['hitung-benda'], unlockLevel: 1, xpReward: 10, theme: 'theme-ocean' },
+    { id: 'warna', name: 'Hutan Warna', icon: '', games: ['cocok-warna'], unlockLevel: 2, xpReward: 15, theme: 'theme-forest' },
+    { id: 'bentuk', name: 'Kerajaan Bentuk', icon: '⚪', games: ['tebak-bentuk'], unlockLevel: 3, xpReward: 20, theme: 'theme-mountain' },
+    { id: 'sains', name: 'Hutan Sains', icon: '🔬', games: ['quiz-sains'], unlockLevel: 5, xpReward: 30, theme: 'theme-forest' },
+    { id: 'english', name: 'Planet English', icon: '', games: ['quiz-english'], unlockLevel: 7, xpReward: 40, theme: 'theme-space' }
 ];
 
 const ACHIEVEMENTS = [
@@ -44,10 +44,21 @@ const SHAPES = [
     { name: 'Hati', icon: '❤️' }
 ];
 
+const GUIDE_MESSAGES = {
+    greeting: ['Halo! Aku EduBot! 👋', 'Selamat datang di petualangan! 🎉', 'Siap belajar hari ini? 📚'],
+    levelUp: ['Hebat! Level up! 🎊', 'Kamu semakin pintar! ⭐', 'Luar biasa! Terus belajar! 🚀'],
+    correct: ['Benar! Pintar! 🌟', 'Keren! Lanjutkan! 💪', 'Sempurna! 🎯'],
+    wrong: ['Coba lagi ya! 💪', 'Hampir benar! 🤔', 'Jangan menyerah! 🌈'],
+    daily: ['Jangan lupa misi harian! 📋', 'Klaim hadiah harianmu! ', 'Streak belajar penting! 🔥'],
+    idle: ['Ayo main game! 🎮', 'Masih ada dunia yang belum dijelajahi! 🗺️', 'Kumpulkan XP untuk naik level! ']
+};
+
 // ============= STATE =============
 let player = null;
 let currentGame = null;
 let gameState = {};
+let dailyMissions = [];
+let guideMessageIndex = 0;
 
 // ============= INIT =============
 window.addEventListener('load', () => {
@@ -55,6 +66,7 @@ window.addEventListener('load', () => {
     setTimeout(() => {
         showScreen(player ? 'main' : 'login');
     }, 2000);
+    startGuideRotation();
 });
 
 if ('serviceWorker' in navigator) {
@@ -101,9 +113,103 @@ function toggleDarkMode() {
     localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
 }
 
-// Load dark mode preference
 if (localStorage.getItem('darkMode') === 'true') {
     document.body.classList.add('dark-mode');
+}
+
+// ============= CHARACTER GUIDE =============
+function startGuideRotation() {
+    setInterval(() => {
+        if (!player) return;
+        const msgs = GUIDE_MESSAGES.idle;
+        const msg = msgs[Math.floor(Math.random() * msgs.length)];
+        showGuideMessage(msg);
+    }, 15000);
+}
+
+function showGuideMessage(msg) {
+    const bubble = document.getElementById('guideBubble');
+    const text = document.getElementById('guideText');
+    text.textContent = msg;
+    bubble.style.animation = 'none';
+    setTimeout(() => bubble.style.animation = 'popIn 0.5s ease', 10);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const avatar = document.getElementById('guideAvatar');
+    if (avatar) {
+        avatar.onclick = () => {
+            const msgs = GUIDE_MESSAGES.greeting;
+            showGuideMessage(msgs[Math.floor(Math.random() * msgs.length)]);
+            speak(msgs[0]);
+        };
+    }
+});
+
+// ============= PARTICLE & CONFETTI EFFECTS =============
+function createParticles(x, y, count = 20) {
+    const container = document.getElementById('particleContainer');
+    const colors = ['#fbbf24', '#f59e0b', '#ef4444', '#10b981', '#3b82f6', '#a855f7'];
+    
+    for (let i = 0; i < count; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = x + 'px';
+        particle.style.top = y + 'px';
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        
+        const angle = (Math.PI * 2 * i) / count;
+        const distance = 100 + Math.random() * 100;
+        particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+        particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+        
+        container.appendChild(particle);
+        setTimeout(() => particle.remove(), 1500);
+    }
+}
+
+function createConfetti(count = 50) {
+    const container = document.getElementById('confettiContainer');
+    const colors = ['#fbbf24', '#ef4444', '#10b981', '#3b82f6', '#a855f7', '#ec4899', '#f97316'];
+    const shapes = ['square', 'circle'];
+    
+    for (let i = 0; i < count; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+        
+        if (shapes[Math.floor(Math.random() * shapes.length)] === 'circle') {
+            confetti.style.borderRadius = '50%';
+        }
+        
+        container.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 4000);
+    }
+}
+
+function showLevelUpAnimation(newLevel) {
+    const overlay = document.createElement('div');
+    overlay.className = 'level-up-overlay';
+    overlay.innerHTML = `
+        <div class="level-up-content">
+            <h1>🎊 LEVEL UP! 🎊</h1>
+            <div class="big-emoji">⭐</div>
+            <h2>Level ${newLevel}</h2>
+            <p>${GUIDE_MESSAGES.levelUp[Math.floor(Math.random() * GUIDE_MESSAGES.levelUp.length)]}</p>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+    createConfetti(100);
+    speak(`Selamat! Kamu naik ke level ${newLevel}!`);
+    
+    setTimeout(() => {
+        overlay.style.opacity = '0';
+        overlay.style.transition = 'opacity 0.5s';
+        setTimeout(() => overlay.remove(), 500);
+    }, 3000);
 }
 
 // ============= LOGIN =============
@@ -142,12 +248,15 @@ function login() {
         ownedItems: [],
         streak: 1,
         lastLogin: new Date().toDateString(),
-        xpMultiplier: 1
+        xpMultiplier: 1,
+        missionsCompleted: 0,
+        worldsCompleted: []
     };
 
     savePlayer();
-    notify(`Selamat datang, ${name}! 🎉`);
+    notify(`Selamat datang, ${name}! `);
     speak(`Halo ${name}, selamat datang di EduKids Adventure!`);
+    createConfetti(30);
     showScreen('main');
 }
 
@@ -166,26 +275,104 @@ function updateMainScreen() {
     document.getElementById('xpBar').style.width = percent + '%';
     document.getElementById('xpText').textContent = `${player.xp} / ${xpNeeded} XP`;
 
-    // Render worlds
-    const grid = document.getElementById('worldGrid');
+    // Render daily missions
+    renderDailyMissions();
+
+    // Render adventure path
+    renderAdventurePath();
+
+    // Update guide
+    showGuideMessage(`Halo ${player.name}! Ayo belajar! 🎓`);
+}
+
+function renderDailyMissions() {
+    const today = new Date().toDateString();
+    if (player.lastMissionDate !== today) {
+        dailyMissions = [
+            { id: 'play_3_games', title: 'Mainkan 3 Game', icon: '🎮', target: 3, progress: 0, reward: 20, completed: false },
+            { id: 'correct_10', title: '10 Jawaban Benar', icon: '✅', target: 10, progress: 0, reward: 30, completed: false },
+            { id: 'visit_worlds', title: 'Kunjungi 2 Dunia', icon: '🗺️', target: 2, progress: 0, reward: 25, completed: false }
+        ];
+        player.lastMissionDate = today;
+        savePlayer();
+    } else {
+        dailyMissions = player.dailyMissions || dailyMissions;
+    }
+
+    const grid = document.getElementById('missionsGrid');
     grid.innerHTML = '';
-    WORLDS.forEach(w => {
-        const locked = player.level < w.unlockLevel;
+    dailyMissions.forEach(m => {
         const card = document.createElement('div');
-        card.className = 'world-card' + (locked ? ' locked' : '');
+        card.className = 'mission-card' + (m.completed ? ' completed' : '');
         card.innerHTML = `
-            <div class="world-icon">${w.icon}</div>
-            <div class="world-name">${w.name}</div>
-            <div class="world-level">${locked ? '🔒 Level ' + w.unlockLevel : '✨ Buka'}</div>
+            <div class="mission-icon">${m.icon}</div>
+            <div class="mission-info">
+                <div class="mission-title">${m.title}</div>
+                <div class="mission-reward">${m.progress}/${m.target} • +${m.reward} XP</div>
+            </div>
         `;
-        if (!locked) card.onclick = () => openWorld(w);
         grid.appendChild(card);
     });
+}
 
-    checkDailyStreak();
+function renderAdventurePath() {
+    const container = document.getElementById('adventurePath');
+    container.innerHTML = '';
+
+    // SVG path line
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'path-svg');
+    svg.setAttribute('viewBox', '0 0 100 100');
+    svg.setAttribute('preserveAspectRatio', 'none');
+    
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('class', 'path-line active');
+    path.setAttribute('d', 'M 10 50 Q 25 30, 40 50 T 70 50 T 90 50');
+    svg.appendChild(path);
+    container.appendChild(svg);
+
+    // World nodes
+    const nodesDiv = document.createElement('div');
+    nodesDiv.className = 'world-nodes';
+
+    WORLDS.forEach((w, i) => {
+        const locked = player.level < w.unlockLevel;
+        const completed = player.worldsCompleted && player.worldsCompleted.includes(w.id);
+        const isCurrent = !locked && !completed && (i === 0 || player.level >= WORLDS[i-1].unlockLevel);
+
+        const node = document.createElement('div');
+        node.className = 'world-node';
+        if (locked) node.classList.add('locked');
+        if (completed) node.classList.add('completed');
+        if (isCurrent) node.classList.add('current');
+
+        let badge = '';
+        if (completed) badge = '<div class="node-badge">✓</div>';
+
+        node.innerHTML = `
+            ${badge}
+            <span class="node-icon">${w.icon}</span>
+            <div class="node-name">${w.name}</div>
+            <div class="node-level">${locked ? '🔒 Level ' + w.unlockLevel : (completed ? '✅ Selesai' : '✨ Buka')}</div>
+        `;
+
+        if (!locked) {
+            node.onclick = (e) => {
+                createParticles(e.clientX, e.clientY, 15);
+                openWorld(w);
+            };
+        }
+
+        nodesDiv.appendChild(node);
+    });
+
+    container.appendChild(nodesDiv);
 }
 
 function openWorld(world) {
+    // Apply theme
+    document.body.className = world.theme + (document.body.classList.contains('dark-mode') ? ' dark-mode' : '');
+    
     const games = world.games;
     if (games.length === 0) {
         notify('Game di dunia ini belum tersedia 🔜', 'info');
@@ -209,6 +396,8 @@ function claimDailyReward() {
     savePlayer();
     updateMainScreen();
     notify(`🎁 +${reward} koin & 10 XP! Streak: ${player.streak} hari`);
+    createConfetti(40);
+    showGuideMessage(`Streak ${player.streak} hari! Hebat! 🔥`);
     checkAchievements();
 }
 
@@ -226,7 +415,7 @@ function checkDailyStreak() {
 // ============= GAMES =============
 function startGame(gameId, world) {
     currentGame = { id: gameId, world: world };
-    gameState = { score: 0, round: 0, maxRounds: 5 };
+    gameState = { score: 0, round: 0, maxRounds: 5, correct: 0 };
     showScreen('game');
     document.getElementById('gameTitle').textContent = world.name;
     document.getElementById('gameScore').textContent = '0';
@@ -371,9 +560,15 @@ function checkAnswer(btn, correct, answer) {
     if (correct) {
         btn.classList.add('correct');
         gameState.score++;
+        gameState.correct++;
         document.getElementById('gameScore').textContent = gameState.score;
         speak(`Benar! Pintar sekali!`);
         notify('✅ Benar! +1 skor', 'success');
+        createParticles(btn.getBoundingClientRect().left + 50, btn.getBoundingClientRect().top + 25, 10);
+        
+        // Update missions
+        updateMissionProgress('correct_10', 1);
+        
         setTimeout(() => {
             switch(currentGame.id) {
                 case 'tebak-huruf': startLetterGame(); break;
@@ -386,6 +581,7 @@ function checkAnswer(btn, correct, answer) {
         btn.classList.add('wrong');
         speak(`Salah, jawabannya adalah ${answer}`);
         notify(`❌ Salah. Jawabannya: ${answer}`, 'error');
+        showGuideMessage(GUIDE_MESSAGES.wrong[Math.floor(Math.random() * GUIDE_MESSAGES.wrong.length)]);
         setTimeout(() => {
             switch(currentGame.id) {
                 case 'tebak-huruf': startLetterGame(); break;
@@ -397,6 +593,22 @@ function checkAnswer(btn, correct, answer) {
     }
 }
 
+function updateMissionProgress(missionId, amount) {
+    if (!player.dailyMissions) player.dailyMissions = dailyMissions;
+    const mission = player.dailyMissions.find(m => m.id === missionId);
+    if (mission && !mission.completed) {
+        mission.progress += amount;
+        if (mission.progress >= mission.target) {
+            mission.completed = true;
+            player.xp += mission.reward;
+            player.missionsCompleted++;
+            notify(` Misi selesai: ${mission.title}! +${mission.reward} XP`, 'success');
+            createConfetti(30);
+        }
+        savePlayer();
+    }
+}
+
 function endGame() {
     const xpGained = gameState.score * (currentGame.world.xpReward || 10) * (player.xpMultiplier || 1);
     const coinsGained = gameState.score * 5;
@@ -405,17 +617,32 @@ function endGame() {
     player.coins += coinsGained;
     player.gamesPlayed++;
 
-    // Level up
+    // Mark world as visited for mission
+    if (!player.worldsCompleted) player.worldsCompleted = [];
+    if (!player.worldsCompleted.includes(currentGame.world.id)) {
+        player.worldsCompleted.push(currentGame.world.id);
+        updateMissionProgress('visit_worlds', 1);
+    }
+    updateMissionProgress('play_3_games', 1);
+
+    // Level up check
+    let leveledUp = false;
+    let newLevel = player.level;
     const xpNeeded = player.level * 100;
     while (player.xp >= xpNeeded) {
         player.xp -= xpNeeded;
         player.level++;
-        notify(`🎊 Level Up! Sekarang Level ${player.level}!`, 'success');
-        speak(`Selamat! Kamu naik ke level ${player.level}`);
+        newLevel = player.level;
+        leveledUp = true;
     }
 
     savePlayer();
     checkAchievements();
+
+    if (leveledUp) {
+        showLevelUpAnimation(newLevel);
+        showGuideMessage(GUIDE_MESSAGES.levelUp[Math.floor(Math.random() * GUIDE_MESSAGES.levelUp.length)]);
+    }
 
     const modal = document.getElementById('modal');
     document.getElementById('modalBody').innerHTML = `
@@ -437,10 +664,12 @@ function endGame() {
         <button class="btn-primary" onclick="closeModal(); showScreen('main');">Kembali ke Menu</button>
     `;
     modal.classList.add('active');
+    createConfetti(50);
 }
 
 function exitGame() {
     if (confirm('Keluar dari game? Progress akan hilang.')) {
+        document.body.className = (document.body.classList.contains('dark-mode') ? 'dark-mode' : '');
         showScreen('main');
     }
 }
@@ -461,6 +690,7 @@ function checkAchievements() {
             a.unlocked = true;
             notify(`🏆 Achievement Unlocked: ${a.name}!`, 'success');
             speak(`Selamat! Kamu mendapatkan pencapaian ${a.name}`);
+            createConfetti(60);
         }
     });
     savePlayer();
@@ -522,6 +752,7 @@ function buyItem(id) {
     savePlayer();
     updateMainScreen();
     notify(`✅ Berhasil membeli ${item.name}!`);
+    createConfetti(30);
     showShop();
 }
 
@@ -553,8 +784,12 @@ function showParentDashboard() {
                 <p>Koin Terkumpul</p>
             </div>
             <div class="dashboard-card">
-                <h3>🏆 ${player.achievements.filter(a => a.unlocked).length}</h3>
+                <h3> ${player.achievements.filter(a => a.unlocked).length}</h3>
                 <p>Pencapaian</p>
+            </div>
+            <div class="dashboard-card">
+                <h3>📋 ${player.missionsCompleted || 0}</h3>
+                <p>Misi Selesai</p>
             </div>
         </div>
         <div style="margin-top:20px;">
@@ -592,7 +827,7 @@ function toggleSettings() {
             <button class="btn-primary" style="padding:8px 15px; width:auto; margin:0;" onclick="toggleDarkMode()">Toggle</button>
         </div>
         <div class="achievement-item">
-            <div class="achievement-icon">🔊</div>
+            <div class="achievement-icon"></div>
             <div style="flex:1;"><strong>Suara</strong></div>
             <button class="btn-primary" style="padding:8px 15px; width:auto; margin:0;" onclick="speak('Halo!')">Test</button>
         </div>
